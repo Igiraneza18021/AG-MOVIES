@@ -65,34 +65,46 @@ export function VideoPlayer({ movie }: VideoPlayerProps) {
   const [isStreamable, setIsStreamable] = useState(false)
   const [isJumpshare, setIsJumpshare] = useState(false)
   const [isHls, setIsHls] = useState(false)
+  const [externalSourceUrl, setExternalSourceUrl] = useState<string | null>(null)
 
   useEffect(() => {
     const loadVideoUrl = async () => {
+      setIsLoading(true)
+      setError(null)
       if (movie.video_file_path) {
         try {
           const publicUrl = await storageService.getVideoUrl(movie.video_file_path)
           const signed = await storageService.getSignedUrl(movie.video_file_path, 60)
           setVideoUrl(publicUrl)
           setDownloadUrl(signed || publicUrl)
+          setExternalSourceUrl(null)
+          // HTML5 video will flip loading states via events
         } catch (error) {
           console.error("Error loading video URL:", error)
           setError("Failed to load video")
+          setIsLoading(false)
         }
       } else if (movie.video_url) {
         // Fallback to direct URL if no file path
         const isTbx = /terabox\.com|1024terabox\.com|terabox\.app/.test(movie.video_url)
         setIsTeraBox(isTbx)
+        setExternalSourceUrl(movie.video_url)
         if (isTbx) {
           // Use proxy to enable inline playback
           const proxied = `/api/proxy-video?url=${encodeURIComponent(movie.video_url)}`
           setVideoUrl(proxied)
           setDownloadUrl(undefined as unknown as string)
+          // HTML5 video will manage loading state via events
         } else {
           setVideoUrl(movie.video_url)
           setDownloadUrl(movie.video_url)
+          // If this is an iframe host, show a brief loading state
         }
         setIsStreamable(/(^|\.)streamable\.com\//.test(movie.video_url))
         setIsJumpshare(/(^|\.)jumpshare\.com\//.test(movie.video_url))
+        if ((/((^|\.)streamable\.com\/)|((^|\.)jumpshare\.com\/)/.test(movie.video_url))) {
+          setTimeout(() => setIsLoading(false), 1200)
+        }
       } else {
         // Demo video URL
         setVideoUrl("https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")
@@ -100,6 +112,8 @@ export function VideoPlayer({ movie }: VideoPlayerProps) {
         setIsTeraBox(false)
         setIsStreamable(false)
         setIsJumpshare(false)
+        setExternalSourceUrl(null)
+        // HTML5 video will manage loading state via events
       }
     }
 
@@ -416,15 +430,37 @@ export function VideoPlayer({ movie }: VideoPlayerProps) {
         </div>
       )}
 
-      {/* Error Message */}
+      {/* Error / Handoff Overlay */}
       {error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/80">
-          <div className="text-center text-white">
-            <p className="text-lg mb-4">{error}</p>
-            <Button onClick={() => setError(null)} variant="outline">
-              <RotateCcw className="h-4 w-4 mr-2" />
-              Retry
-            </Button>
+        <div className="absolute inset-0 flex items-center justify-center bg-black/70">
+          <div className="text-center text-white space-y-4">
+            {externalSourceUrl ? (
+              <>
+                <p className="text-base opacity-90">This source is not playing inline.</p>
+                <a
+                  href={externalSourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-white/20 hover:bg-white/30 text-white border border-white/40 rounded-md px-6 py-3"
+                >
+                  Open Externally
+                </a>
+                <div>
+                  <Button onClick={() => setError(null)} variant="outline" className="bg-transparent">
+                    <RotateCcw className="h-4 w-4 mr-2" />
+                    Retry
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="text-lg">{error}</p>
+                <Button onClick={() => setError(null)} variant="outline" className="bg-transparent">
+                  <RotateCcw className="h-4 w-4 mr-2" />
+                  Retry
+                </Button>
+              </>
+            )}
           </div>
         </div>
       )}
@@ -555,6 +591,17 @@ export function VideoPlayer({ movie }: VideoPlayerProps) {
             <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
               <Subtitles className="h-5 w-5" />
             </Button>
+
+            {externalSourceUrl && (
+              <a
+                href={externalSourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white text-sm px-3 py-1 rounded hover:bg-white/20 border border-white/20"
+              >
+                Open Externally
+              </a>
+            )}
 
             {downloadUrl && (
               <a
