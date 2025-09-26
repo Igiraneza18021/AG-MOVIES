@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import type { MovieWithCategories } from "@/lib/types"
 
-const WATCHLIST_KEY = "streamflix-watchlist"
+const WATCHLIST_KEY = "AG Movies-watchlist"
 
 export function useWatchlist() {
   const [watchlist, setWatchlist] = useState<MovieWithCategories[]>([])

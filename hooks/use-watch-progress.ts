@@ -3,7 +3,7 @@
 import { useCallback } from "react"
 import type { MovieWithCategories } from "@/lib/types"
 
-const CONTINUE_WATCHING_KEY = "streamflix-continue-watching"
+const CONTINUE_WATCHING_KEY = "AG Movies-continue-watching"
 
 interface WatchProgress {
   movieId: string

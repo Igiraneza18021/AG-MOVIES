@@ -36,7 +36,7 @@ export default function WelcomePage() {
       {/* Content */}
       <div className="relative z-10 text-center space-y-8 px-4">
         <div className="space-y-4">
-          <h1 className="text-6xl md:text-8xl font-bold text-white tracking-tight">StreamFlix</h1>
+          <h1 className="text-6xl md:text-8xl font-bold text-white tracking-tight">AG Movies</h1>
           <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
             Unlimited movies, TV shows and more
           </p>
@@ -49,7 +49,7 @@ export default function WelcomePage() {
               size="lg"
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-6 text-xl font-semibold rounded-md transition-all duration-200 hover:scale-105"
             >
-              Enter StreamFlix
+              Enter AG Movies
             </Button>
           </Link>
         </div>

@@ -8,7 +8,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-sm text-muted-foreground">
           <div className="space-y-3">
-            <div className="text-foreground font-semibold">StreamFlix</div>
+            <div className="text-foreground font-semibold">AG Movies</div>
             <p className="text-xs leading-6">Unlimited movies, TV shows and more.</p>
           </div>
           <div className="space-y-3">
@@ -37,7 +37,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-10 flex items-center justify-between border-t border-border pt-6 text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} StreamFlix. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} AG Movies. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <a className="hover:text-foreground" href="#">Twitter</a>
             <a className="hover:text-foreground" href="#">Instagram</a>

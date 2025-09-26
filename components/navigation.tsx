@@ -30,7 +30,7 @@ export function Navigation() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/home" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-primary">StreamFlix</span>
+            <span className="text-2xl font-bold text-primary">AG Movies</span>
           </Link>
 
           {/* Desktop Navigation */}

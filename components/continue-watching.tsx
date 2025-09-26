@@ -14,7 +14,7 @@ interface WatchProgress {
   movie?: MovieWithCategories
 }
 
-const CONTINUE_WATCHING_KEY = "streamflix-continue-watching"
+const CONTINUE_WATCHING_KEY = "AG Movies-continue-watching"
 
 export function ContinueWatching() {
   const [continueWatching, setContinueWatching] = useState<WatchProgress[]>([])

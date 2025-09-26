@@ -16,7 +16,7 @@ export function AdminNavigation() {
               </Button>
             </Link>
             <div className="h-6 w-px bg-border" />
-            <span className="text-xl font-bold text-primary">StreamFlix Admin</span>
+            <span className="text-xl font-bold text-primary">AG Movies Admin</span>
           </div>
 
           {/* Admin Navigation */}
